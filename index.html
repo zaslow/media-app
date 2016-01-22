@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS Test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="https://code.angularjs.org/1.3.4/angular.js"></script>
+    <script src="mediaApp.js"></script>
+		<script src="controllers/musicCtrl.js"></script>
+		<script src="controllers/filmCtrl.js"></script>
+		<script src="controllers/colorCtrl.js"></script>
+		<script src="services/mediaLists.service.js"></script>
+		<script src="services/colorHelper.service.js"></script>
+		<script src="directives/highLight.directive.js"></script>
+</head>
+<body>
+
+<div class="container" data-ng-app="mediaApp">
+  
+  <div class="row">
+  	<p class="col-sm-6"> AngularJS Media Application</p>
+  	
+  	<div class="col-xs-1"></div>
+  	
+  	<div class="col-sm-4" data-ng-controller="colorCtrl as colorVm"> 
+  	  <label for="hlighter">Hightlight Color:</label>
+        <select 
+          id="hlighter" 
+          data-ng-model="colorVm.colorHelper.colorPick" 
+          data-ng-options="color as color.name for color in colorVm.colors"
+        >
+          <option>{{ color.name }}</option>
+        </select>
+  	</div>  <!-- End colorCtrl -->    
+  </div>  <!-- End row -->
+  
+  <div class="row">
+    <div class="col-sm-5" data-ng-controller="musicCtrl as musicVm">
+  		<h4>
+  			Albums
+  			<input type="text" class="form-control" data-ng-model="musicVm.albumFilter" />
+  		</h4>
+  		<ul class="list-group">
+  			<li class="list-group-item" 
+  			  data-ng-repeat="album in musicVm.albums | filter:musicVm.albumFilter" 
+  			  high-light 
+  			  high-light-color="{{ musicVm.colorHelper.colorPick.name }}">
+  				  {{ album.title }}
+  				<ul class="list-group" data-ng-if="musicVm.albumFilter">
+  					<li class="list-group-item"> {{ album.artist }}, {{ album.year }}</li>
+  				</ul>
+  			</li>
+  		</ul>
+  	</div>  <!-- End musicCtrl -->
+  	
+  	<div class="col-xs-1"></div>
+  
+  	<div class="col-sm-5" data-ng-controller="filmCtrl as filmVm">
+  		<h4>
+  			Films
+  			<input type="text" class="form-control" data-ng-model="filmVm.filmFilter" />
+  		</h4>
+  		<ul class="list-group">
+  			<li class="list-group-item" 
+  			  data-ng-repeat="film in filmVm.films | filter:filmVm.filmFilter" 
+  			  high-light
+  			  high-light-color="{{ filmVm.colorHelper.colorPick.name  }}">
+  				  {{ film.title }} 
+  				<ul class="list-group" data-ng-if="filmVm.filmFilter">
+  					<li class="list-group-item">Director: {{ film.director }}, {{ film.year }}</li>
+  			  </ul>
+  			</li> 
+  		</ul>
+  	</div>  <!-- End filmCtrl -->
+  </div>  <!-- End row -->
+	
+</div>
+</body>
+</html>
